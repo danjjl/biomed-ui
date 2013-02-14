@@ -8,19 +8,19 @@ if __name__ == '__main__':
 
     app = QtGui.QApplication(sys.argv)
 
-    db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
-    db.setDatabaseName('biomed.sql')
+    db = QtSql.QSqlDatabase.addDatabase('QSQLITE') #Défini le type de db (ici SqlLite)
+    db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
     db.open()
 
-    model = QtSql.QSqlQueryModel()
-    model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time')
+    model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
+    model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time') # Requête pour récupérer les mesures n'ayant d'utilisateurs
 
-    model.insertColumn(2)
-    model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter")
+    model.insertColumn(2) #Colonne dans lesquels on mettra les checkbox
+    model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter") #titre de la collone
 
-    view = QtGui.QTableView()
+    view = QtGui.QTableView() #associe les données à une vue
     view.setModel(model)
-    view.hideColumn(0);
+    view.hideColumn(0); #cache les colonnes id
     view.hideColumn(1);
 
     view.setWindowTitle("Test")
