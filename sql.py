@@ -14,7 +14,9 @@ if __name__ == '__main__':
 
     model = QtSql.QSqlQueryModel()
     model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time')
+
     model.insertColumn(2)
+    model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter")
 
     view = QtGui.QTableView()
     view.setModel(model)
