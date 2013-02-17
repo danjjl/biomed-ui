@@ -20,7 +20,7 @@ class noUserMesures(QtGui.QWidget):
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter") #titre de la colonne
 
         """Associe le modèle à une vue"""
-        self.table = QtGui.QTableView(parent) #associe les données à une vue
+        self.table = QtGui.QTableView() #associe les données à une vue
         self.table.setModel(self.model)
 
         self.table.hideColumn(0) #cache les colonnes id
@@ -31,6 +31,38 @@ class noUserMesures(QtGui.QWidget):
         for i in range(0, self.model.rowCount()):
             self.checkboxes.append((self.model.data(self.model.index(i, 0)).toInt()[0], QtGui.QCheckBox())) #(index, QCheckbox)
             #TROUVER LIGNE AJOUTER WIDGET DANS MODEL OU VUE
+
+        """Action buttons"""
+        self.newUser = QtGui.QPushButton("Nouvel utilisateur") #Boutons
+        self.existingUser = QtGui.QPushButton("utilisateur existant")
+        self.checkAll = QtGui.QPushButton("tout selectionner")
+        self.uncheckAll = QtGui.QPushButton("tout deselectionner")
+
+        self.checkAll.clicked.connect(self.check) #Action se déclenchant après un click sur un bouton
+        self.uncheckAll.clicked.connect(self.uncheck)
+
+        """Build layouts"""
+        self.buttons = QtGui.QVBoxLayout() #Conteneur vertical pour les boutons
+        self.buttons.addWidget(self.newUser)
+        self.buttons.addWidget(self.existingUser)
+        self.buttons.addWidget(self.checkAll)
+        self.buttons.addWidget(self.uncheckAll)
+
+        self.mainView = QtGui.QHBoxLayout(parent) #Conteneur horizontal pour la table et le conteneur des boutons
+        self.mainView.addWidget(self.table)
+        self.mainView.addLayout(self.buttons)
+
+        parent.setLayout(self.mainView)
+
+    def check(self):
+        for box in self.checkboxes:
+            box[1].setCheckState(QtCore.Qt.Checked) #Coche tous les checkbox
+
+    def uncheck(self):
+        for box in self.checkboxes:
+            box[1].setCheckState(QtCore.Qt.Unchecked) #Décoche tous les checkbox
+
+
 
 if __name__ == '__main__':
 
