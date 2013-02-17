@@ -18,11 +18,10 @@ if __name__ == '__main__':
     model.insertColumn(2) #Colonne dans lesquels on mettra les checkbox
     model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter") #titre de la collone
 
-    checkboxes = dict()#Dictionnaire ou l'on stoque les index et les checkbox
-    for i in range(1, model.rowCount()):
-        checkboxes[model.data(model.index(i - 1, 0)).toInt()] = QtGui.QCheckBox()
-        model.setData(model.index(i - 1, 2), checkboxes[model.data(model.index(i - 1, 0)).toInt()])#HEEELP Faulty Line :(
-
+    checkboxes = list()#liste ou l'on stoque les index et les checkbox
+    for i in range(0, model.rowCount()):
+        checkboxes.append((model.data(model.index(i, 0)).toInt()[0], QtGui.QCheckBox())) #(index, QCheckbox)
+        #TROUVER LIGNE AJOUTER WIDGET DANS MODEL OU VUE
 
     view = QtGui.QTableView() #associe les données à une vue
     view.setModel(model)
