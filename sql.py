@@ -16,9 +16,6 @@ class noUserMesures(QtGui.QWidget):
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
         self.model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time') #Requête pour récupérer les mesures n'ayant d'utilisateurs
 
-        self.model.insertColumn(2) #Colonne dans laquelle on mettra les checkbox
-        self.model.setHeaderData(2, QtCore.Qt.Horizontal, "ajouter") #titre de la colonne
-
         """Associe le modèle à une vue"""
         self.table = QtGui.QTableView() #associe les données à une vue
         self.table.setModel(self.model)
@@ -26,17 +23,18 @@ class noUserMesures(QtGui.QWidget):
         self.table.hideColumn(0) #cache les colonnes id
         self.table.hideColumn(1)
 
-        """Liste des checkbox(PAS ENCORE FONCTIONNEL)"""
+        """Liste des checkbox(Solution temporaire (prob esthétique))"""
+        self.checkboxLayout = QtGui.QVBoxLayout() #Conteneur vertical à checkbox
         self.checkboxes = list()#liste ou l'on stoque les index et les checkbox
         for i in range(0, self.model.rowCount()):
             self.checkboxes.append((self.model.data(self.model.index(i, 0)).toInt()[0], QtGui.QCheckBox())) #(index, QCheckbox)
-            #TROUVER LIGNE AJOUTER WIDGET DANS MODEL OU VUE
+            self.checkboxLayout.addWidget(self.checkboxes[-1][1])
 
         """Action buttons"""
         self.newUser = QtGui.QPushButton("Nouvel utilisateur") #Boutons
-        self.existingUser = QtGui.QPushButton("utilisateur existant")
-        self.checkAll = QtGui.QPushButton("tout selectionner")
-        self.uncheckAll = QtGui.QPushButton("tout deselectionner")
+        self.existingUser = QtGui.QPushButton("Utilisateur existant")
+        self.checkAll = QtGui.QPushButton("Tout selectionner")
+        self.uncheckAll = QtGui.QPushButton("Tout deselectionner")
 
         self.checkAll.clicked.connect(self.check) #Action se déclenchant après un click sur un bouton
         self.uncheckAll.clicked.connect(self.uncheck)
@@ -49,6 +47,7 @@ class noUserMesures(QtGui.QWidget):
         self.buttons.addWidget(self.uncheckAll)
 
         self.mainView = QtGui.QHBoxLayout(parent) #Conteneur horizontal pour la table et le conteneur des boutons
+        self.mainView.addLayout(self.checkboxLayout)
         self.mainView.addWidget(self.table)
         self.mainView.addLayout(self.buttons)
 
@@ -61,8 +60,6 @@ class noUserMesures(QtGui.QWidget):
     def uncheck(self):
         for box in self.checkboxes:
             box[1].setCheckState(QtCore.Qt.Unchecked) #Décoche tous les checkbox
-
-
 
 if __name__ == '__main__':
 
