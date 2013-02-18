@@ -5,7 +5,7 @@ import sys
 from PyQt4 import QtCore, QtGui, QtSql
 
 class newUser(QtGui.QWidget):
-    def __init__(self, parent, mesures = None):
+    def __init__(self, parent, mesures):
         super(newUser, self).__init__(parent)
 
         """Champs présent dans le formulaire"""
@@ -29,14 +29,3 @@ class newUser(QtGui.QWidget):
         formulaire.addRow("Nom", lastName)
         formulaire.addRow("Age", age)
         formulaire.addRow("Sexe", sexe)
-
-if __name__ == '__main__':
-
-    app = QtGui.QApplication(sys.argv)
-
-    main = QtGui.QWidget()
-    main.setWindowTitle("Test")
-    user = newUser(main)
-    main.show()
-
-    sys.exit(app.exec_())
