@@ -61,12 +61,13 @@ class noUserMesures(QtGui.QWidget):
         self.show()
 
     def addNewUser(self):
-        index = list()
+        index = list() #List des id cochés
         for box in self.checkboxes:
             if box[1].isChecked():
                 index.append(box[0])
-        self.hide()
-        newUser(self.parent, box)
+        if index: #Si liste non vide
+            self.hide()
+            newUser(self.parent, index)
 
     def check(self):
         for box in self.checkboxes:
