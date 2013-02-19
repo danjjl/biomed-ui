@@ -14,7 +14,7 @@ class newUser(QtGui.QWidget):
         self.db.open()
 
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
-        self.model.setQuery('SELECT poids, taille, temperature, frequence, time FROM mesures WHERE id in('+ ", ".join("'"+repr(i)+"'" for i in mesures) +') ORDER BY time') #Requête pour récupérer les mesures avec un id ds mesures (JE SUIS PAS UN GRAND PYTHONISTE YA PAS MIEU QUE LE JOIN?)
+        self.model.setQuery('SELECT poids, taille, temperature, frequence, time FROM mesures WHERE id in('+ str(mesures)[1:-1] +') ORDER BY time') #Requête pour récupérer les mesures avec un id ds mesures
 
 
         """Associe le modèle à une vue"""
