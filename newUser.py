@@ -36,6 +36,18 @@ class newUser(QtGui.QWidget):
         self.sexe.addItem("Femme")
         self.sexe.addItem("Homme")
 
+        """Boutons d'actions"""
+        self.cancel = QtGui.QPushButton("Annuler") #Cancel (brings back to user selection could be performed with menu)
+        self.submit = QtGui.QPushButton("Ajouter") #Ajoute les mesures au nouvel utilisateur
+
+        self.cancel.clicked.connect(self.returnNoUserMesures)
+        self.submit.clicked.connect(self.addUser)
+
+        """Layout des boutons"""
+        self.buttons = QtGui.QHBoxLayout()
+        self.buttons.addWidget(self.cancel)
+        self.buttons.addWidget(self.submit)
+
         """Layout du formulaire + label"""
         self.formulaire = QtGui.QFormLayout(parent)
         self.formulaire.addRow("Mesures", self.table)
@@ -43,3 +55,10 @@ class newUser(QtGui.QWidget):
         self.formulaire.addRow("Nom", self.lastName)
         self.formulaire.addRow("Age", self.age)
         self.formulaire.addRow("Sexe", self.sexe)
+        self.formulaire.addRow(self.buttons) #Ajoute un Layout
+
+    def returnNoUserMesures(self):
+        print "Nothing yet"
+
+    def addUser(self):
+        print "Nothing yet"
