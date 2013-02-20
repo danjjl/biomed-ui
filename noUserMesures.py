@@ -57,7 +57,6 @@ class noUserMesures(QtGui.QWidget):
         self.mainView.addLayout(self.buttons)
 
         self.setLayout(self.mainView) #Display
-        self.setGeometry(0,0, 500, 200)
         self.show()
 
     def addNewUser(self):
@@ -83,6 +82,7 @@ if __name__ == '__main__':
 
     main = QtGui.QWidget()
     main.setWindowTitle("Test")
+    main.setGeometry(200,60, 500, 400)
     user = noUserMesures(main)
     main.show()
 
