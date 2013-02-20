@@ -7,10 +7,10 @@ from PyQt4 import QtCore, QtGui, QtSql
 from newUser import newUser
 
 class noUserMesures(QtGui.QWidget):
-    def __init__(self, parent):
-        super(noUserMesures, self).__init__(parent)
+    def __init__(self, layout):
+        super(noUserMesures, self).__init__()
 
-        self.parent = parent
+        self.layout = layout
 
         """Connection à la db; chargement des données dans le modèle"""
         self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE') #Défini le type de db (ici SqlLite)
@@ -66,7 +66,7 @@ class noUserMesures(QtGui.QWidget):
                 index.append(box[0])
         if index: #Si liste non vide
             self.hide()
-            newUser(self.parent, index)
+            newUser(self.layout, index)
 
     def check(self):
         for box in self.checkboxes:

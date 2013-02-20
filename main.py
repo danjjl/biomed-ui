@@ -14,7 +14,13 @@ if __name__ == '__main__':
     main = QtGui.QWidget()
     main.setWindowTitle("Test")
     main.setGeometry(200,60, 500, 400)
-    noUsers = noUserMesures(main)
+
+    layout = QtGui.QVBoxLayout()
+
+    noUsers = noUserMesures(layout)
+
+    layout.addWidget(noUsers)
+    main.setLayout(layout)
     main.show()
 
     sys.exit(app.exec_())

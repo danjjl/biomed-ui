@@ -5,8 +5,10 @@ import sys
 from PyQt4 import QtGui, QtSql
 
 class newUser(QtGui.QWidget):
-    def __init__(self, parent, mesures):
-        super(newUser, self).__init__(parent)
+    def __init__(self, layout, mesures):
+        super(newUser, self).__init__()
+
+        layout.addWidget(self)
 
         self.mesures = mesures
 
