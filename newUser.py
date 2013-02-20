@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4 import QtCore, QtGui, QtSql
+from PyQt4 import QtGui, QtSql
 
 class newUser(QtGui.QWidget):
     def __init__(self, parent, mesures):
@@ -63,7 +63,7 @@ class newUser(QtGui.QWidget):
         self.show()
 
     def returnNoUserMesures(self):
-        print "Nothing yet"
+        self.hide() #Retourne à l'écran d'accueil
 
     def addUser(self):
         query = QtSql.QSqlQuery()
