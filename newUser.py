@@ -8,6 +8,8 @@ class newUser(QtGui.QWidget):
     def __init__(self, parent, mesures):
         super(newUser, self).__init__(parent)
 
+        self.mesures = mesures
+
         """Connection à la db; chargement des données dans le modèle"""
         self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE') #Défini le type de db (ici SqlLite)
         self.db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
@@ -49,7 +51,7 @@ class newUser(QtGui.QWidget):
         self.buttons.addWidget(self.submit)
 
         """Layout du formulaire + label"""
-        self.formulaire = QtGui.QFormLayout(parent)
+        self.formulaire = QtGui.QFormLayout()
         self.formulaire.addRow("Mesures", self.table)
         self.formulaire.addRow("Prenom", self.firstName)
         self.formulaire.addRow("Nom", self.lastName)
@@ -57,8 +59,26 @@ class newUser(QtGui.QWidget):
         self.formulaire.addRow("Sexe", self.sexe)
         self.formulaire.addRow(self.buttons) #Ajoute un Layout
 
+        self.setLayout(self.formulaire)
+        self.show()
+
     def returnNoUserMesures(self):
         print "Nothing yet"
 
     def addUser(self):
-        print "Nothing yet"
+        query = QtSql.QSqlQuery()
+
+        """Ajouter le nouvel utilisateur"""
+        query.exec_("INSERT INTO utilisateurs (nom, prenom, age, sexe) values('"+ self.lastName.text() +"', '"+ self.firstName.text() +"', DATE('"+ self.age.date().toString("yyyy-MM-dd") +"'), '"+ self.sexe.currentText()[0].toLower() +"')") #Crée un nouvel utilisateur
+
+        """Trouver le dernier id"""
+        query.exec_("SELECT id FROM utilisateurs") #Ya pe plus simple mais ça fct bien
+        query.last()
+        lastId = query.value(0).toInt()[0]
+
+        """Ajoute l'utilisateur aux mesures'"""
+        for index in self.mesures:
+            query.exec_("UPDATE mesures SET utilisateur ="+ str(lastId) +" WHERE id ="+ str(index) +"")
+
+        """Cache la fenetre"""
+        self.hide()
