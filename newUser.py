@@ -4,12 +4,11 @@
 import sys
 from PyQt4 import QtGui, QtSql
 
-class newUser(QtGui.QDialog):
-    def __init__(self, parent, mesures):
-        super(newUser, self).__init__(parent)
+from editUser import editUserVirtual
 
-        self.parent = parent
-        self.mesures = mesures
+class newUser(editUserVirtual):
+    def __init__(self, parent, mesures):
+        super(newUser, self).__init__(parent, mesures, None, None, "1992-05-24", "f")
 
         """chargement des données dans le modèle"""
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
@@ -19,49 +18,13 @@ class newUser(QtGui.QDialog):
         self.table = QtGui.QTableView() #associe les données à une vue
         self.table.setModel(self.model)
 
-        """Champs présent dans le formulaire"""
-        self.firstName = QtGui.QLineEdit() #Champs texte
-        self.firstName.setMaxLength(25)
-
-        self.lastName = QtGui.QLineEdit() #Champs texte
-        self.lastName.setMaxLength(25)
-
-        self.age = QtGui.QDateTimeEdit() #Champs date
-        self.age.setDisplayFormat("dd MMM yyyy") #ex : 24 mai 1992
-        self.age.setCalendarPopup(True)
-
-        self.sexe = QtGui.QComboBox() #Liste déroulante
-        self.sexe.addItem("Femme")
-        self.sexe.addItem("Homme")
-
-        """Boutons d'actions"""
-        self.cancel = QtGui.QPushButton("Annuler") #Cancel
-        self.submit = QtGui.QPushButton("Ajouter") #Ajoute les mesures au nouvel utilisateur
-
-        self.cancel.clicked.connect(self.returnNoUserMesures)
-        self.submit.clicked.connect(self.addUser)
-
-        """Layout des boutons"""
-        self.buttons = QtGui.QHBoxLayout()
-        self.buttons.addWidget(self.cancel)
-        self.buttons.addWidget(self.submit)
-
-        """Layout du formulaire + label"""
-        self.formulaire = QtGui.QFormLayout()
-        self.formulaire.addRow("Mesures", self.table)
-        self.formulaire.addRow("Prenom", self.firstName)
-        self.formulaire.addRow("Nom", self.lastName)
-        self.formulaire.addRow("Age", self.age)
-        self.formulaire.addRow("Sexe", self.sexe)
-        self.formulaire.addRow(self.buttons) #Ajoute un Layout
-
-        self.setLayout(self.formulaire)
+        """Modifie affichage"""
+        self.submit.setText("Ajouter")
+        self.formulaire.insertRow(0, "Mesures", self.table)
+        self.formulaire.update()
         self.exec_()
 
-    def returnNoUserMesures(self):
-        self.close() #Retourne à la sélection des mesures
-
-    def addUser(self):
+    def modifyUser(self):
         query = QtSql.QSqlQuery()
 
         """Ajouter le nouvel utilisateur"""
@@ -73,7 +36,7 @@ class newUser(QtGui.QDialog):
         lastId = query.value(0).toInt()[0]
 
         """Ajoute l'utilisateur aux mesures'"""
-        for index in self.mesures:
+        for index in self.indexes:
             query.exec_("UPDATE mesures SET utilisateur ="+ str(lastId) +" WHERE id ="+ str(index) +"")
 
         """Cache la fenetre"""
