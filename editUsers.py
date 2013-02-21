@@ -69,7 +69,6 @@ class editUsers(QtGui.QWidget):
                 firstName = self.model.data(self.model.index(i, 2)).toString()
                 age = self.model.data(self.model.index(i, 3)).toString()
                 sexe = self.model.data(self.model.index(i, 4)).toString()
-                print sexe
         return (lastName, firstName, age, sexe)
 
     def delUser(self):
