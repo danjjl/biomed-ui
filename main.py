@@ -6,6 +6,7 @@ from PyQt4 import QtGui, QtSql
 
 from noUserMesures import noUserMesures
 from editUsers import editUsers
+from editMesures import editMesures
 
 
 if __name__ == '__main__':
@@ -23,8 +24,10 @@ if __name__ == '__main__':
 
     noUsers = noUserMesures()
     editUsers = editUsers()
+    editMesures = editMesures()
     main.addTab(noUsers, "Mesures sans utilisateur")
     main.addTab(editUsers, "Editer les utilisateurs")
+    main.addTab(editMesures, "Editer les mesures")
     main.show()
 
     sys.exit(app.exec_())
