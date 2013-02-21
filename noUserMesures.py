@@ -5,6 +5,8 @@ import sys
 from PyQt4 import QtCore, QtGui, QtSql
 
 from newUser import newUser
+from mesureToExistingUser import mesureToExistingUser
+
 
 class noUserMesures(QtGui.QWidget):
     def __init__(self, layout):
@@ -34,6 +36,7 @@ class noUserMesures(QtGui.QWidget):
         self.uncheckAll = QtGui.QPushButton("Tout deselectionner")
 
         self.newUser.clicked.connect(self.addNewUser) #Action se déclenchant après un click sur un bouton
+        self.existingUser.clicked.connect(self.addExistingUser)
         self.checkAll.clicked.connect(self.check)
         self.uncheckAll.clicked.connect(self.uncheck)
 
@@ -63,13 +66,22 @@ class noUserMesures(QtGui.QWidget):
             self.checkboxLayout.removeWidget(box[1]) #L'enlève du layout
             box[1].close() #Delete le checkbox
 
-    def addNewUser(self):
+    def _listChecked(self): #Fonction privée à ne pas utiliser hors de la classe
         index = list() #List des id cochés
         for box in self.checkboxes:
             if box[1].isChecked():
                 index.append(box[0])
+        return index
+
+    def addNewUser(self):
+        index = self._listChecked()
         if index: #Si liste non vide
             newUser(self, index)
+
+    def addExistingUser(self):
+        index = self._listChecked()
+        if index: #Si liste non vide
+            mesureToExistingUser(self, index)
 
     def check(self):
         for box in self.checkboxes:
