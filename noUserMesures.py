@@ -25,10 +25,7 @@ class noUserMesures(QtGui.QWidget):
 
         """Liste des checkbox(Solution temporaire (prob esthétique))"""
         self.checkboxLayout = QtGui.QVBoxLayout() #Conteneur vertical à checkbox
-        self.checkboxes = list()#liste ou l'on stoque les index et les checkbox
-        for i in range(0, self.model.rowCount()):
-            self.checkboxes.append((self.model.data(self.model.index(i, 0)).toInt()[0], QtGui.QCheckBox())) #(index, QCheckbox)
-            self.checkboxLayout.addWidget(self.checkboxes[-1][1])
+        self._checkboxList()
 
         """Action buttons"""
         self.newUser = QtGui.QPushButton("Nouvel utilisateur") #Boutons
@@ -55,6 +52,17 @@ class noUserMesures(QtGui.QWidget):
         self.setLayout(self.mainView) #Display
         self.show()
 
+    def _checkboxList(self): #Fonction privée à ne pas utiliser hors de la classe
+        self.checkboxes = list()#liste ou l'on stoque les index et les checkbox
+        for i in range(0, self.model.rowCount()):
+            self.checkboxes.append((self.model.data(self.model.index(i, 0)).toInt()[0], QtGui.QCheckBox())) #(index, QCheckbox)
+            self.checkboxLayout.addWidget(self.checkboxes[-1][1])
+
+    def _emptyCheckboxList(self): #Fonction privée à ne pas utiliser hors de la classe
+        for box in self.checkboxes:
+            self.checkboxLayout.removeWidget(box[1]) #L'enlève du layout
+            box[1].close() #Delete le checkbox
+
     def addNewUser(self):
         index = list() #List des id cochés
         for box in self.checkboxes:
@@ -70,3 +78,8 @@ class noUserMesures(QtGui.QWidget):
     def uncheck(self):
         for box in self.checkboxes:
             box[1].setCheckState(QtCore.Qt.Unchecked) #Décoche tous les checkbox
+
+    def update(self):
+        self.model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time') #Recrée le modèle
+        self._emptyCheckboxList() #Delete les anciennes checkbox
+        self._checkboxList() #en crée des nouvelles

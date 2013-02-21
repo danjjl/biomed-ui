@@ -8,6 +8,7 @@ class newUser(QtGui.QDialog):
     def __init__(self, parent, mesures):
         super(newUser, self).__init__(parent)
 
+        self.parent = parent
         self.mesures = mesures
 
         """chargement des données dans le modèle"""
@@ -77,4 +78,5 @@ class newUser(QtGui.QDialog):
             query.exec_("UPDATE mesures SET utilisateur ="+ str(lastId) +" WHERE id ="+ str(index) +"")
 
         """Cache la fenetre"""
+        self.parent.update()
         self.close()
