@@ -5,7 +5,7 @@ import sys
 from PyQt4 import QtCore, QtGui, QtSql
 
 class editUserVirtual(QtGui.QDialog):
-    def __init__(self, parent, indexes, firstName, lastName, age, sexe):
+    def __init__(self, parent, indexes, lastName, firstName, age, sexe):
         super(editUserVirtual, self).__init__(parent)
 
         self.parent = parent
