@@ -15,7 +15,6 @@ class newUser(QtGui.QDialog):
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
         self.model.setQuery('SELECT poids, taille, temperature, frequence, time FROM mesures WHERE id in('+ str(mesures)[1:-1] +') ORDER BY time') #Requête pour récupérer les mesures avec un id ds mesures
 
-
         """Associe le modèle à une vue"""
         self.table = QtGui.QTableView() #associe les données à une vue
         self.table.setModel(self.model)
@@ -36,7 +35,7 @@ class newUser(QtGui.QDialog):
         self.sexe.addItem("Homme")
 
         """Boutons d'actions"""
-        self.cancel = QtGui.QPushButton("Annuler") #Cancel (brings back to user selection could be performed with menu)
+        self.cancel = QtGui.QPushButton("Annuler") #Cancel
         self.submit = QtGui.QPushButton("Ajouter") #Ajoute les mesures au nouvel utilisateur
 
         self.cancel.clicked.connect(self.returnNoUserMesures)
