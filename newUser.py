@@ -12,11 +12,7 @@ class newUser(QtGui.QWidget):
 
         self.mesures = mesures
 
-        """Connection à la db; chargement des données dans le modèle"""
-        self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE') #Défini le type de db (ici SqlLite)
-        self.db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
-        self.db.open()
-
+        """chargement des données dans le modèle"""
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
         self.model.setQuery('SELECT poids, taille, temperature, frequence, time FROM mesures WHERE id in('+ str(mesures)[1:-1] +') ORDER BY time') #Requête pour récupérer les mesures avec un id ds mesures
 

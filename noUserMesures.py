@@ -13,10 +13,6 @@ class noUserMesures(QtGui.QWidget):
         self.layout = layout
 
         """Connection à la db; chargement des données dans le modèle"""
-        self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE') #Défini le type de db (ici SqlLite)
-        self.db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
-        self.db.open()
-
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
         self.model.setQuery('select * from mesures WHERE utilisateur=0 ORDER BY time') #Requête pour récupérer les mesures n'ayant d'utilisateurs
 
