@@ -16,16 +16,12 @@ if __name__ == '__main__':
     db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
     db.open()
 
-    main = QtGui.QWidget()
+    main = QtGui.QTabWidget()
     main.setWindowTitle("Test")
     main.setGeometry(200,60, 500, 400)
 
-    layout = QtGui.QVBoxLayout()
-
-    noUsers = noUserMesures(layout)
-
-    layout.addWidget(noUsers)
-    main.setLayout(layout)
+    noUsers = noUserMesures()
+    main.addTab(noUsers, "Mesures sans utilisateur")
     main.show()
 
     sys.exit(app.exec_())
