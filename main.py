@@ -22,23 +22,29 @@ if __name__ == '__main__':
     db.setDatabaseName('biomed.sql') #nom de la db à ouvrir
     db.open()
 
+    "Fenetre principale"
     main = QtGui.QTabWidget()
     main.setWindowTitle("Test")
     main.setGeometry(200,60, 500, 400)
 
+    """2 Vues indépendantes"""
     homeScreen = home()
     syncScreen = sync()
 
+    """Ecrans d'édition"""
     noUsers = noUserMesures()
     editUsers = editUsers()
     editMesures = editMesures()
 
+    """Tab contenant les écrans d'édition"""
     editTabs = QtGui.QTabWidget()
 
+    editTabs.currentChanged.connect(callUpdate)#Signal chg tab connecté aux != fct update
+
+    """Association écran-tab"""
     editTabs.addTab(noUsers, "Mesures sans utilisateur")
     editTabs.addTab(editUsers, "Editer les utilisateurs")
     editTabs.addTab(editMesures, "Editer les mesures")
-    editTabs.currentChanged.connect(callUpdate)
 
     main.addTab(homeScreen, "Accueil")
     main.addTab(syncScreen, "Synchroniser")
