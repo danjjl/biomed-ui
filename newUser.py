@@ -4,11 +4,9 @@
 import sys
 from PyQt4 import QtGui, QtSql
 
-class newUser(QtGui.QWidget):
-    def __init__(self, layout, mesures):
-        super(newUser, self).__init__()
-
-        layout.addWidget(self)
+class newUser(QtGui.QDialog):
+    def __init__(self, parent, mesures):
+        super(newUser, self).__init__(parent)
 
         self.mesures = mesures
 
@@ -58,10 +56,10 @@ class newUser(QtGui.QWidget):
         self.formulaire.addRow(self.buttons) #Ajoute un Layout
 
         self.setLayout(self.formulaire)
-        self.show()
+        self.exec_()
 
     def returnNoUserMesures(self):
-        self.hide() #Retourne à l'écran d'accueil
+        self.close() #Retourne à la sélection des mesures
 
     def addUser(self):
         query = QtSql.QSqlQuery()
@@ -79,4 +77,4 @@ class newUser(QtGui.QWidget):
             query.exec_("UPDATE mesures SET utilisateur ="+ str(lastId) +" WHERE id ="+ str(index) +"")
 
         """Cache la fenetre"""
-        self.hide()
+        self.close()

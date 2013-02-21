@@ -61,8 +61,7 @@ class noUserMesures(QtGui.QWidget):
             if box[1].isChecked():
                 index.append(box[0])
         if index: #Si liste non vide
-            self.hide()
-            newUser(self.layout, index)
+            newUser(self, index)
 
     def check(self):
         for box in self.checkboxes:
