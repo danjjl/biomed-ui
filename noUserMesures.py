@@ -9,10 +9,8 @@ from mesureToExistingUser import mesureToExistingUser
 
 
 class noUserMesures(QtGui.QWidget):
-    def __init__(self, layout):
+    def __init__(self):
         super(noUserMesures, self).__init__()
-
-        self.layout = layout
 
         """Connection à la db; chargement des données dans le modèle"""
         self.model = QtSql.QSqlQueryModel() #Modèle dans lequel la db sera chargée
