@@ -11,7 +11,7 @@ from editUsers import editUsers
 from editMesures import editMesures
 
 def callUpdate(index):
-    main.widget(index).update()
+    editTabs.widget(index).update()
 
 if __name__ == '__main__':
 
