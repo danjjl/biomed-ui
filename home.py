@@ -1,26 +1,67 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#BMI taille²/poids
+
 import sys
 from PyQt4 import QtCore, QtGui, QtSql
 
+"""Redéfini une nouvelle classe de bouton qui connait son id, permet d'émettre sur click en envoyant l'id du bouton)"""
+class buttonId(QtGui.QPushButton):
+    clikedId = QtCore.pyqtSignal(int) #Je sais pas pk le rentrer ds le constructeur fait planter le emit
+
+    def __init__(self, index):
+        super(buttonId, self).__init__()
+        self.index = index #Id du bouton (id de l'utilisateur)
+
+        self.clicked.connect(self.pushed) #Redéfini le signal clicked pour passer l'id en paramètre
+    def pushed(self):
+        self.clikedId.emit(self.index)
+
+"""Ecran d'accueil"""
 class home(QtGui.QWidget):
     def __init__(self):
         super(home, self).__init__()
 
-        self.layout = QtGui.QGridLayout # Chaque fiche d'utilisateur sera rangé ds un grid layout en 2 collones
+        """On rangera les boutons dans ce layout"""
+        self.layout = QtGui.QGridLayout(self) # Chaque fiche d'utilisateur sera rangé ds un grid layout en 2 collones
+        x = 0 #Utilisé pour ranger les boutons proprement en 2 colonnes
+        y = 0
 
-        utilisateurs = QtSql.QSqlQuery() #Requete : utilisateur
-        mesures = QtSql.QSqlQuery() #Requete : mesures
+        """Récupère les données et les affiche dans un bouton"""
+        utilisateurs = QtSql.QSqlQuery() #Requete : des utilisateurs (pas self car peut être détruit après le constructeur)
+        mesures = QtSql.QSqlQuery() #Requete : des mesures
         utilisateurs.exec_("SELECT id, nom, prenom FROM utilisateurs")
+
+        #On parcours tous les utilisateurs
         while utilisateurs.next():
+
+            #Récupère les identifiant des utilisateurs
             curId = utilisateurs.value(0).toInt()[0] #Id utilisateur
             lastName = utilisateurs.value(1).toString() #Nom
             firstName = utilisateurs.value(2).toString() #Prénom
-            mesures.exec_("SELECT poids, taille, temperature FROM mesures WHERE utilisateur="+str(curId)+" ORDER BY time LIMIT 1")
-            if mesures.first():
-                poids = mesures.value(0).toDouble()[0]
-                taille = mesures.value(1).toDouble()[0]
-                temperature = mesures.value(2).toDouble()[0]
-                print str(curId) + ", " +firstName + " " + lastName + ": (" + str(poids) + ", " + str(taille) + ", " + str(temperature) + ")" #Line temporaire pour montrer que tout fct bien :)
 
+            mesures.exec_("SELECT poids, taille, temperature FROM mesures WHERE utilisateur="+str(curId)+" ORDER BY time LIMIT 1")
+            #Si ils ont une mesure associé on récupère la dernière
+            if mesures.first():
+
+                #Récupère la dernière mesure
+                weight = mesures.value(0).toDouble()[0]
+                size = mesures.value(1).toDouble()[0]
+                temperature = mesures.value(2).toDouble()[0]
+
+                #Affiche les info dans un layout
+                info = QtGui.QFormLayout()
+                info.addRow(QtGui.QLabel("<b>"+firstName+" "+lastName+"</b>"))
+                info.addRow("BMI", QtGui.QLabel(str((weight**2)/size)[0:5]))
+
+                #Bouton contenant les infos permettre de voir des vues spécifiques
+                self.button = buttonId(curId)
+                #self.button.clickedId.connect(......) Chaque bouton sera connecté
+                self.button.setLayout(info)
+                self.button.setMinimumHeight(50) #Hauteur min du bouton
+                self.layout.addWidget(self.button, x, y) #ajoute bouton au grid
+
+                #Prépare les coordonées du prochain bouton
+                x += 1
+                if x > 1:
+                    x = 0
+                    y += 1
