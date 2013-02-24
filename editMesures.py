@@ -6,15 +6,18 @@ from PyQt4 import QtCore, QtGui, QtSql
 
 from mesureToExistingUser import mesureToExistingUser
 
+"""Empeche l'édition d'un d'un QSqlRelationalTableModel"""
+class customQSqlRelationalTableModel(QtSql.QSqlRelationalTableModel):
+    def flags(self, index):
+        return QtCore.Qt.ItemIsEnabled
 
 class editMesures(QtGui.QWidget):
     def __init__(self):
         super(editMesures, self).__init__()
-#TODO MAKE UN-EDITABLE, GET LAST NAME
+#TODO GET LAST NAME
         """Connection à la db; chargement des données dans le modèle"""
-        self.model = QtSql.QSqlRelationalTableModel() #Modèle dans lequel la db sera chargée
+        self.model = customQSqlRelationalTableModel() #Modèle dans lequel la db sera chargée
         self.model.setTable("mesures")
-        self.model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
         self.model.setRelation(1, QtSql.QSqlRelation('utilisateurs', 'id', 'prenom'))
         self.model.select()
 
