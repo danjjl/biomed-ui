@@ -8,9 +8,10 @@ from PyQt4 import QtCore, QtGui, QtSql
 class buttonId(QtGui.QPushButton):
     clikedId = QtCore.pyqtSignal(int) #Je sais pas pk le rentrer ds le constructeur fait planter le emit
 
-    def __init__(self, index):
-        super(buttonId, self).__init__()
+    def __init__(self, label, index, mesure):
+        super(buttonId, self).__init__(label)
         self.index = index #Id du bouton (id de l'utilisateur)
+        self.mesure = mesure #Type de mesure
 
         self.clicked.connect(self.pushed) #Redéfini le signal clicked pour passer l'id en paramètre
     def pushed(self):
@@ -39,7 +40,7 @@ class home(QtGui.QWidget):
             lastName = utilisateurs.value(1).toString() #Nom
             firstName = utilisateurs.value(2).toString() #Prénom
 
-            mesures.exec_("SELECT poids, taille, temperature FROM mesures WHERE utilisateur="+str(curId)+" ORDER BY time DESC LIMIT 1")
+            mesures.exec_("SELECT poids, taille, temperature, frequence FROM mesures WHERE utilisateur="+str(curId)+" ORDER BY time DESC LIMIT 1")
             #Si ils ont une mesure associé on récupère la dernière
             if mesures.first():
 
@@ -47,14 +48,20 @@ class home(QtGui.QWidget):
                 weight = mesures.value(0).toDouble()[0]
                 size = mesures.value(1).toDouble()[0]
                 temperature = mesures.value(2).toDouble()[0]
+                frequence = mesures.value(3).toDouble()[0]
 
                 #Affiche les info dans un layout
                 info = QtGui.QFormLayout()
                 info.addRow(QtGui.QLabel("<b>"+firstName+" "+lastName+"</b>"))
-                info.addRow("BMI", QtGui.QLabel(str((weight**2)/size)[0:5]))
+                info.addRow(buttonId("BMI", curId, "bmi"), QtGui.QLabel(str((weight**2)/size)[0:5]))
+                info.addRow(buttonId("Poids", curId, "weight"), QtGui.QLabel(str(weight)[0:5]))
+                info.addRow(buttonId("Taille", curId, "size"), QtGui.QLabel(str(size)[0:5]))
+                info.addRow(buttonId("Temperature", curId, "temp"), QtGui.QLabel(str(temperature)[0:5]))
+                info.addRow(buttonId("Frequence", curId, "freq"), QtGui.QLabel(str(frequence)[0:4]))
 
                 #Bouton contenant les infos permettre de voir des vues spécifiques
-                self.button = buttonId(curId)
+                self.button = QtGui.QFrame()#buttonId(curId)
+                self.button.setFrameShape(QtGui.QFrame.WinPanel)
                 #self.button.clickedId.connect(......) Chaque bouton sera connecté
                 self.button.setLayout(info)
                 self.button.setMinimumHeight(50) #Hauteur min du bouton
