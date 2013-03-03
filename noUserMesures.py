@@ -9,6 +9,8 @@ from mesureToExistingUser import mesureToExistingUser
 
 
 class noUserMesures(QtGui.QWidget):
+    dbChange = QtCore.pyqtSignal() #Signal utilisé sur modif db
+
     def __init__(self):
         super(noUserMesures, self).__init__()
 
@@ -75,11 +77,13 @@ class noUserMesures(QtGui.QWidget):
         index = self._listChecked()
         if index: #Si liste non vide
             newUser(self, index)
+            self.dbChange.emit()
 
     def addExistingUser(self):
         index = self._listChecked()
         if index: #Si liste non vide
             mesureToExistingUser(self, index)
+            self.dbChange.emit()
 
     def check(self):
         for box in self.checkboxes:

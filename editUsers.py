@@ -7,6 +7,8 @@ from PyQt4 import QtCore, QtGui, QtSql
 from editUser import editUser
 
 class editUsers(QtGui.QWidget):
+    dbChange = QtCore.pyqtSignal() #Signal utilisé sur modif db
+
     def __init__(self):
         super(editUsers, self).__init__()
 
@@ -79,13 +81,14 @@ class editUsers(QtGui.QWidget):
                 query = QtSql.QSqlQuery()
                 query.exec_("DELETE FROM utilisateurs WHERE id="+str(index[0])+"")
                 query.exec_("DELETE FROM mesures WHERE utilisateur="+str(index[0])+"")
-                self.update()
+                self.dbChange.emit()
 
     def modifyUser(self):
         index = self._listChecked()
         if index: #Si liste non vide
             (lastName, firstName, age, sexe) = self._infoUser()
             editUser(self, index, lastName, firstName, age, sexe)
+            self.dbChange.emit()
 
     def update(self):
         self.model.setQuery('select * from utilisateurs') #Recrée le modèle

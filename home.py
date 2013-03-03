@@ -33,3 +33,6 @@ class home(QtGui.QWidget):
     def _chooseUser(self):
         self.graphs.hide()
         self.userCards.show()
+
+    def update(self):
+        self.userCards.update()

@@ -10,8 +10,11 @@ from noUserMesures import noUserMesures
 from editUsers import editUsers
 from editMesures import editMesures
 
-def callUpdate(index):
-    editTabs.widget(index).update()
+def callUpdate():
+    noUsers.update()
+    editUsers.update()
+    editMesures.update()
+    homeScreen.update()
 
 if __name__ == '__main__':
 
@@ -39,7 +42,10 @@ if __name__ == '__main__':
     """Tab contenant les écrans d'édition"""
     editTabs = QtGui.QTabWidget()
 
-    editTabs.currentChanged.connect(callUpdate)#Signal chg tab connecté aux != fct update
+    """Sur modif de la db"""
+    noUsers.dbChange.connect(callUpdate)
+    editUsers.dbChange.connect(callUpdate)
+    editMesures.dbChange.connect(callUpdate)
 
     """Association écran-tab"""
     editTabs.addTab(noUsers, "Mesures sans utilisateur")

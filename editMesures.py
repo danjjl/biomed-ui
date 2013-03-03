@@ -12,6 +12,8 @@ class customQSqlRelationalTableModel(QtSql.QSqlRelationalTableModel):
         return QtCore.Qt.ItemIsEnabled
 
 class editMesures(QtGui.QWidget):
+    dbChange = QtCore.pyqtSignal() #Signal utilisé sur modif db
+
     def __init__(self):
         super(editMesures, self).__init__()
 #TODO GET LAST NAME
@@ -79,6 +81,7 @@ class editMesures(QtGui.QWidget):
         index = self._listChecked()
         if index: #Si liste non vide
             mesureToExistingUser(self, index)
+            self.dbChange.emit()
 
     def delMesures(self):
         indexes = self._listChecked()
@@ -88,7 +91,7 @@ class editMesures(QtGui.QWidget):
                 query = QtSql.QSqlQuery()
                 for index in indexes:
                     query.exec_("DELETE FROM mesures WHERE id="+str(index)+"")
-                self.update()
+                self.dbChange.emit()
 
     def check(self):
         for box in self.checkboxes:
