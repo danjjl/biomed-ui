@@ -51,6 +51,7 @@ class users(QtGui.QWidget):
     def _emptyGrid(self):
         self._negMod() #x est 1 trop loin
         while self.y >=0:
+            self.layout.itemAtPosition(self.x, self.y).widget().hide()
             self.layout.removeItem(self.layout.itemAtPosition(self.x, self.y)) #Pourrait faire 'mieux' en vidant le QFormLayout
             self._negMod()
 

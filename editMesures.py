@@ -68,6 +68,7 @@ class editMesures(QtGui.QWidget):
     def _emptyCheckboxList(self): #Fonction privée à ne pas utiliser hors de la classe
         for box in self.checkboxes:
             self.checkboxLayout.removeWidget(box[1]) #L'enlève du layout
+            box[1].hide()
             box[1].close() #Delete le checkbox
 
     def _listChecked(self): #Fonction privée à ne pas utiliser hors de la classe
