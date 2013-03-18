@@ -61,12 +61,11 @@ class editUsers(QtGui.QWidget):
         self.show()
 
     def _infoUser(self):
-        for i in range(0, self.model.rowCount()):
-            if self.radios[i][1].isChecked():
-                lastName = self.model.data(self.model.index(i, 1)).toString()
-                firstName = self.model.data(self.model.index(i, 2)).toString()
-                age = self.model.data(self.model.index(i, 3)).toString()
-                sexe = self.model.data(self.model.index(i, 4)).toString()
+        i = self.model.indexChecked()[0]
+        lastName = self.model.data(self.model.index(i, 1)).toString()
+        firstName = self.model.data(self.model.index(i, 2)).toString()
+        age = self.model.data(self.model.index(i, 3)).toString()
+        sexe = self.model.data(self.model.index(i, 4)).toString()
         return (lastName, firstName, age, sexe)
 
     def delUser(self):
