@@ -33,8 +33,9 @@ class sync(QtGui.QWidget):
         self.disconnectUsbTimer.stop()
         self.arduinoUsbTimer.stop()
         self.label.setText("Veuillez deconnecter l'Arduino...")
-        self.disconnectUsbTimer.start(5000)
-        self.arduinoUsbTimer.start(10000)
+        self._disconnectUsb()
+        time.sleep(5)
+        self._arduinoUsb()
 
     def _disconnectUsb(self):
         "Récupère une liste des usb (sans l'arduino)"
@@ -42,6 +43,7 @@ class sync(QtGui.QWidget):
         self.label.setText("Veuillez connecter l'Arduino...")
 
     def _arduinoUsb(self):
+        print "ha"
         """Fait la différence avec la liste avec l'arduino connecté pour trouver le port utilisé"""
         arduinoUSB = [x for x in self._list_serial_ports() if x not in self.disconnectedlistUSB] #différence listes ubs
 
