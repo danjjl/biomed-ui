@@ -28,12 +28,18 @@ class graph(QtGui.QWidget):
         self.button = QtGui.QPushButton("Retour Utilisateurs")
         self.button.clicked.connect(self._hideCaller)
 
+        self.title = QtGui.QLabel("<b>Graph<b>")
+        self.title.setMaximumHeight(16)
+        self.title.setScaledContents(True)
+        self.title.setAlignment(QtCore.Qt.AlignHCenter)
+
         """Barre de menu complète contenant outils graph et retour utilisateur"""
         self.sublayout = QtGui.QHBoxLayout()
         self.sublayout.addWidget(self.button)
         self.sublayout.addWidget(self.toolbar)
         """Layout contenant le graph et la barre de menu"""
         self.layout = QtGui.QVBoxLayout(self)
+        self.layout.addWidget(self.title)
         self.layout.addWidget(self.canvas)
         self.layout.addLayout(self.sublayout)
 
@@ -42,7 +48,9 @@ class graph(QtGui.QWidget):
     def _hideCaller(self):
         self.hideCall.emit()
 
-    def redraw(self, index, mesure):
+    def redraw(self, index, mesure, name):
+        self.title.setText("<b>" + name + " - " + mesure + "</>")
+
         """Collecte données"""
         if mesure != "bmi":
             self.mesures.exec_("SELECT "+mesure+", time FROM mesures WHERE utilisateur="+str(index)+" ORDER BY time")

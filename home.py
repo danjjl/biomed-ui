@@ -26,9 +26,9 @@ class home(QtGui.QWidget):
         self.graphs.hideCall.connect(self._chooseUser) #Retour choix utilisateurs
 
     """index: id de l'utilisateur, mesure : type de la mesure (string présent dans la db)'"""
-    def _graphCaller(self, index, mesure):
+    def _graphCaller(self, index, mesure, name):
         self.userCards.hide()
-        self.graphs.redraw(index, mesure)
+        self.graphs.redraw(index, mesure, name)
 
     def _chooseUser(self):
         self.graphs.hide()

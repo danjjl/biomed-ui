@@ -6,20 +6,21 @@ from PyQt4 import QtCore, QtGui, QtSql
 
 """Redéfini une nouvelle classe de bouton qui connait son id, permet d'émettre sur click en envoyant l'id du bouton"""
 class buttonId(QtGui.QPushButton):
-    clikedId = QtCore.pyqtSignal(int, str)
+    clikedId = QtCore.pyqtSignal(int, str, str)
 
-    def __init__(self, label, index, mesure):
+    def __init__(self, label, index, mesure, name):
         super(buttonId, self).__init__(label)
         self.index = index #Id de l'utilisateur
         self.mesure = mesure #Type de mesure (str d'un champs de la db sauf BMI)
+        self.name = name
 
         self.clicked.connect(self._clicked) #Redéfini le signal clicked pour passer l'id en paramètre
     def _clicked(self):
-        self.clikedId.emit(self.index, self.mesure)
+        self.clikedId.emit(self.index, self.mesure, self.name)
 
 """Ecran d'accueil"""
 class users(QtGui.QWidget):
-    callGraph = QtCore.pyqtSignal(int, str)
+    callGraph = QtCore.pyqtSignal(int, str, str)
 
     def __init__(self):
         super(users, self).__init__()
@@ -38,8 +39,8 @@ class users(QtGui.QWidget):
 
         self.show()
 
-    def _graphCaller(self, index, mesure):
-        self.callGraph.emit(index, mesure)
+    def _graphCaller(self, index, mesure, name):
+        self.callGraph.emit(index, mesure, name)
 
     """Genre de %2 pour parcourir le grid de bas en haut"""
     def _negMod(self):
@@ -84,11 +85,11 @@ class users(QtGui.QWidget):
 
                 """Les boutons"""
                 self.buttons = list()
-                self.buttons.append(buttonId("BMI", curId, "bmi"))
-                self.buttons.append(buttonId("Poids", curId, "poids"))
-                self.buttons.append(buttonId("Taille", curId, "taille"))
-                self.buttons.append(buttonId("Temperature", curId, "temperature"))
-                self.buttons.append(buttonId("Frequence", curId, "frequence"))
+                self.buttons.append(buttonId("BMI", curId, "bmi", firstName + " " + lastName))
+                self.buttons.append(buttonId("Poids", curId, "poids", firstName + " " + lastName))
+                self.buttons.append(buttonId("Taille", curId, "taille", firstName + " " + lastName))
+                self.buttons.append(buttonId("Temperature", curId, "temperature", firstName + " " + lastName))
+                self.buttons.append(buttonId("Frequence", curId, "frequence", firstName + " " + lastName))
 
                 """Les labels"""
                 self.labels = list()
