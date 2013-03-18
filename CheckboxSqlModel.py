@@ -58,6 +58,13 @@ class CheckboxSqlModel(QtSql.QSqlQueryModel):
                 index.append(self.data(self.index(i, 0)).toInt()[0])
         return index
 
+    def indexChecked(self):
+        index = list() #List des id cochés
+        for i in self.first:
+            if self.checkboxes[i]:
+                index.append(i)
+        return index
+
     def changeCheck(self, checkState):
         for i in self.first:
             self.setData(self.index(i, self.column), QtCore.QVariant(checkState), QtCore.Qt.CheckStateRole)
